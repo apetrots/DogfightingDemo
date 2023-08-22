@@ -9,16 +9,61 @@ public class Player : MonoBehaviour
 
     public float LaserForce = 20.0f;
 
+    public float DamageCooldown = 0.25f;
+
     public GameObject laserPrefab;
     // can specifically reference the transform of a gameobject
     public Transform laserSpawnPoint;
 
+    public int HealthPoints = 4;
+
+    public SpriteRenderer DamageOverlay;
+
+    public Sprite[] DamageSprites;
+
     Rigidbody2D rb2d;
+
+    // timer to store when the next time this player can be damaged is,
+    // if damageTimer > 0 then invulnerable to collision damage...
+    float damageTimer = 0.0f;
 
     void Start()
     {
     // physics 1st pass 
         rb2d = GetComponent<Rigidbody2D>();
+    }
+
+    void Damage(int hitPoints)
+    {
+        HealthPoints -= hitPoints;
+        if (HealthPoints <= 0)
+        {
+            // game over!
+            print("dead!");
+        }
+
+        UpdateDamageOverlay();
+    }
+
+    void UpdateDamageOverlay()
+    {
+        int spriteIndex = HealthPoints - 1;
+        print(spriteIndex);
+        if (spriteIndex >= DamageSprites.Length || spriteIndex < 0)
+            DamageOverlay.sprite = null;
+        else
+            DamageOverlay.sprite = DamageSprites[spriteIndex];
+    }
+
+    void OnCollisionStay2D(Collision2D coll)
+    {
+        Asteroid ast = coll.gameObject.GetComponent<Asteroid>();
+        if (ast != null && damageTimer <= 0.0f)
+        {
+            Damage(1);
+
+            damageTimer = DamageCooldown;
+        }
     }
 
     void FireLaser(float force)
@@ -37,6 +82,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        UpdateDamageOverlay();
+
+        if (damageTimer > 0.0f)
+            damageTimer -= Time.deltaTime;
+
         // NonPhysicsMove();
         if (Input.GetButtonDown("Jump"))
         {

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
+    // how many times left can this asteroid split into two
+    public int SplitsLeft = 3;
 
     void OnCollisionEnter2D(Collision2D coll)
     {
@@ -16,7 +18,10 @@ public class Asteroid : MonoBehaviour
         // "null" or nothing 
         if (laser != null)
         {
-            SplitIntoTwo();            
+            if (SplitsLeft > 0)
+                SplitIntoTwo();
+            else // if can't split anymore, simply destroy
+                Destroy(this.gameObject);
         }
     }
 
@@ -35,6 +40,9 @@ public class Asteroid : MonoBehaviour
         // also scale their rigidbody masses accordingly
         split1.GetComponent<Rigidbody2D>().mass /= 2;
         split2.GetComponent<Rigidbody2D>().mass /= 2;
+
+        split1.GetComponent<Asteroid>().SplitsLeft -= 1;
+        split2.GetComponent<Asteroid>().SplitsLeft -= 1;
 
         // destroy original asteroid!
         Destroy(this.gameObject);
