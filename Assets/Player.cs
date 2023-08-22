@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float MoveSpeed = 5.0f;
-    public float TurnSpeed = 180.0f;
+    public float MoveSpeed = 80.0f;
+    public float TurnSpeed = 10.0f;
+
+    public float LaserForce = 20.0f;
+
+    public GameObject laserPrefab;
+    // can specifically reference the transform of a gameobject
+    public Transform laserSpawnPoint;
 
     Rigidbody2D rb2d;
 
@@ -15,9 +21,27 @@ public class Player : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
     }
 
+    void FireLaser(float force)
+    {
+        GameObject obj = Instantiate(laserPrefab, laserSpawnPoint.position, transform.rotation);
+        var laserRB = obj.GetComponent<Rigidbody2D>();
+
+        // ignore collision between the new laser's collider and the ship's collider
+        Physics2D.IgnoreCollision(
+                obj.GetComponent<Collider2D>(), 
+                this.GetComponent<Collider2D>()
+            );
+
+        laserRB.AddForce(force * transform.up, ForceMode2D.Impulse);
+    }
+
     void Update()
     {
         // NonPhysicsMove();
+        if (Input.GetButtonDown("Jump"))
+        {
+            FireLaser(LaserForce);
+        }
     }
 
     void FixedUpdate()
