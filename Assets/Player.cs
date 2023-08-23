@@ -48,7 +48,6 @@ public class Player : MonoBehaviour
     void UpdateDamageOverlay()
     {
         int spriteIndex = HealthPoints - 1;
-        print(spriteIndex);
         if (spriteIndex >= DamageSprites.Length || spriteIndex < 0)
             DamageOverlay.sprite = null;
         else
