@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public float DamageCooldown = 0.25f;
     public float DamageSpeedThreshold = 1.5f;
 
+    public float LaserCooldown = 0.05f;
     public GameObject laserPrefab;
     // can specifically reference the transform of a gameobject
     public Transform laserSpawnPoint;
@@ -31,6 +32,7 @@ public class Player : MonoBehaviour
     // timer to store when the next time this player can be damaged is,
     // if damageTimer > 0 then invulnerable to collision damage...
     float damageTimer = 0.0f;
+    float laserTimer = 0.0f;
 
 
     void Start()
@@ -106,17 +108,22 @@ public class Player : MonoBehaviour
             );
 
         laserRB.AddForce(force * transform.up, ForceMode2D.Impulse);
+
+        laserTimer = LaserCooldown;
     }
 
     void Update()
     {
+        // NonPhysicsMove();
+
         UpdateDamageOverlay();
 
         if (damageTimer > 0.0f)
             damageTimer -= Time.deltaTime;
+        if (laserTimer > 0.0f)
+            laserTimer -= Time.deltaTime;
 
-        // NonPhysicsMove();
-        if (Input.GetButtonDown("Jump"))
+        if (laserTimer <= 0.0f && Input.GetButtonDown("Jump"))
         {
             FireLaser(LaserForce);
         }

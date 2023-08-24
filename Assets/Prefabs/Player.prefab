@@ -255,7 +255,7 @@ GameObject:
   - component: {fileID: 3791407299236155487}
   - component: {fileID: 3791407299236155486}
   - component: {fileID: 3791407299236155485}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,6 +348,8 @@ MonoBehaviour:
   TurnSpeed: 10
   LaserForce: 20
   DamageCooldown: 0.5
+  DamageSpeedThreshold: 1.5
+  LaserCooldown: 0.05
   laserPrefab: {fileID: 3796778691269223738, guid: e96dec0fdd84fbf43aed1169eabc8c04, type: 3}
   laserSpawnPoint: {fileID: 3791407299804897817}
   HealthPoints: 4

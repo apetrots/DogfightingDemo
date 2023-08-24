@@ -255,7 +255,7 @@ GameObject:
   - component: {fileID: 7919003316774970281}
   - component: {fileID: 7919003316774970282}
   - component: {fileID: 7919003316774970283}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,15 +404,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c15003200d2b374a88e872139d59069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 80
+  MoveSpeed: 70
   TurnSpeed: 10
-  LaserForce: 20
+  LaserForce: 15
   DamageCooldown: 0.25
+  DamageSpeedThreshold: 1.5
+  LaserCooldown: 0.5
+  AIShootMinAngle: 10
+  AIShootMinDist: 8
+  AICheckDistance: 8
+  AIStopDistance: 3
   laserPrefab: {fileID: 3796778691269223738, guid: e96dec0fdd84fbf43aed1169eabc8c04, type: 3}
   laserSpawnPoint: {fileID: 7919003317062236957}
   HealthPoints: 4
   DamageOverlay: {fileID: 7919003315474069317}
-  DamageSprites: []
+  DamageSprites:
+  - {fileID: 21300000, guid: 3aa7d41e59371a04fbfb847fea09fce1, type: 3}
+  - {fileID: 21300000, guid: 4edee21f8808bbc4f9e750da9e2fed61, type: 3}
+  - {fileID: 21300000, guid: e02beb0d37996364f9b17e0938bd48c8, type: 3}
+  - {fileID: 0}
   shipExplosionFX: {fileID: 6185823314024827157, guid: a5e826c5ae5ddaf46adac1b736bec85d, type: 3}
   sparksFX: {fileID: 6760348363218789693, guid: 005291d6a88e87c4db286147d4140f74, type: 3}
 --- !u!1 &7919003317062236958
