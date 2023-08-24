@@ -86,6 +86,15 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
+        Laser laser = coll.gameObject.GetComponent<Laser>();
+        if (laser != null && damageTimer <= 0.0f)
+        {
+            Damage(1);
+
+            damageTimer = DamageCooldown;
+            return;
+        }
+
         Asteroid ast = coll.gameObject.GetComponent<Asteroid>();
         EnemyShip enemy = coll.gameObject.GetComponent<EnemyShip>();
         if ((ast != null || enemy != null) && coll.relativeVelocity.magnitude >= DamageSpeedThreshold && damageTimer <= 0.0f)
@@ -94,6 +103,7 @@ public class Player : MonoBehaviour
 
             damageTimer = DamageCooldown;
         }
+
     }
 
     void FireLaser(float force)

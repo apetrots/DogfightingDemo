@@ -19,13 +19,13 @@ public class Asteroid : MonoBehaviour
         if (laser != null)
         {
             if (SplitsLeft > 0)
-                SplitIntoTwo();
+                SplitIntoTwo(coll.relativeVelocity);
             else // if can't split anymore, simply destroy
                 Destroy(this.gameObject);
         }
     }
 
-    void SplitIntoTwo()
+    void SplitIntoTwo(Vector2 vel)
     {
         // TODO need to spawn them next to eachother but on opposite sides of object, get bounds of collider
         
@@ -40,6 +40,10 @@ public class Asteroid : MonoBehaviour
         // also scale their rigidbody masses accordingly
         split1.GetComponent<Rigidbody2D>().mass /= 2;
         split2.GetComponent<Rigidbody2D>().mass /= 2;
+
+        split1.GetComponent<Rigidbody2D>().AddForce(2.0f * (vel + Vector2.Perpendicular(vel) * 0.25f).normalized, ForceMode2D.Impulse);
+        split2.GetComponent<Rigidbody2D>().AddForce(2.0f * (vel - Vector2.Perpendicular(vel) * 0.25f).normalized, ForceMode2D.Impulse);
+
 
         split1.GetComponent<Asteroid>().SplitsLeft -= 1;
         split2.GetComponent<Asteroid>().SplitsLeft -= 1;

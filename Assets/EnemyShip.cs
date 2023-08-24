@@ -31,6 +31,8 @@ public class EnemyShip : MonoBehaviour
     public GameObject shipExplosionFX;
     public GameObject sparksFX;
 
+    public GameObject droppedItem;
+
     Player target;
 
     Rigidbody2D rb2d;
@@ -67,6 +69,8 @@ public class EnemyShip : MonoBehaviour
         if (HealthPoints <= 0)
         {
             Explode();
+            if (droppedItem)
+                Instantiate(droppedItem, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
         else
@@ -88,6 +92,15 @@ public class EnemyShip : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
+        Laser laser = coll.gameObject.GetComponent<Laser>();
+        if (laser != null && damageTimer <= 0.0f)
+        {
+            Damage(1);
+
+            damageTimer = DamageCooldown;
+            return;
+        }
+
         Asteroid ast = coll.gameObject.GetComponent<Asteroid>();
         Player player = coll.gameObject.GetComponent<Player>();
         if ((ast != null || player != null) && coll.relativeVelocity.magnitude >= DamageSpeedThreshold && damageTimer <= 0.0f)

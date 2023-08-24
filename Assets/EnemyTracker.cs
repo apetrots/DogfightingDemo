@@ -8,16 +8,23 @@ public class EnemyTracker : MonoBehaviour
 {
     public TextMeshProUGUI numberText;
 
+    int lastCount = -1;
+
     void Update()
     {
         var ships = FindObjectsOfType<EnemyShip>();
 
-        numberText.text = "" + ships.Length;
-    
-        if (ships.Length == 0)
-        {   
-            var gameManager = FindObjectOfType<GameManager>();
-            gameManager.GameWin();
+        if (lastCount != ships.Length)
+        {
+            numberText.text = "" + ships.Length;
+        
+            if (ships.Length == 0)
+            {   
+                var gameManager = FindObjectOfType<GameManager>();
+                gameManager.GameWin();
+            }
         }
+
+        lastCount = ships.Length;
     }
 }

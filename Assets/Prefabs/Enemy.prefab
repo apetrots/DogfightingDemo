@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7919003315312533618}
   - component: {fileID: 7919003315312533617}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,7 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7919003315474069318}
   - component: {fileID: 7919003315474069317}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Damage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,8 +404,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c15003200d2b374a88e872139d59069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 70
-  TurnSpeed: 10
+  MoveSpeed: 60
+  TurnSpeed: 7
   LaserForce: 15
   DamageCooldown: 0.25
   DamageSpeedThreshold: 1.5
@@ -425,6 +425,7 @@ MonoBehaviour:
   - {fileID: 0}
   shipExplosionFX: {fileID: 6185823314024827157, guid: a5e826c5ae5ddaf46adac1b736bec85d, type: 3}
   sparksFX: {fileID: 6760348363218789693, guid: 005291d6a88e87c4db286147d4140f74, type: 3}
+  droppedItem: {fileID: 3008045944636667108, guid: b39aa5f8907503f47adbb655d35a2fec, type: 3}
 --- !u!1 &7919003317062236958
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,7 +435,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7919003317062236957}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LaserSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
