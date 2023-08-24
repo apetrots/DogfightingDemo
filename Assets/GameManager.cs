@@ -15,6 +15,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadSceneAsync("GameOver", LoadSceneMode.Additive);
     }
 
+    public void GameWin()
+    {
+        SceneManager.LoadSceneAsync("GameWin", LoadSceneMode.Additive);
+    }
+
     public void LoadMenu()
     {
         SceneManager.LoadSceneAsync("MainMenu", LoadSceneMode.Single);
