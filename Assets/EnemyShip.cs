@@ -10,6 +10,7 @@ public class EnemyShip : MonoBehaviour
     public float LaserForce = 20.0f;
 
     public float DamageCooldown = 0.25f;
+    public float DamageSpeedThreshold = 1.5f;
 
     public GameObject laserPrefab;
     // can specifically reference the transform of a gameobject
@@ -20,6 +21,9 @@ public class EnemyShip : MonoBehaviour
     public SpriteRenderer DamageOverlay;
 
     public Sprite[] DamageSprites;
+
+    public GameObject shipExplosionFX;
+    public GameObject sparksFX;
 
     Player target;
 
@@ -38,13 +42,27 @@ public class EnemyShip : MonoBehaviour
         target = FindObjectOfType<Player>();
     }
 
+    void Explode()
+    {
+        Instantiate(shipExplosionFX, transform.position, Quaternion.identity);
+    }
+
+    void Sparks()
+    {
+        Instantiate(sparksFX, transform.position, Quaternion.identity);
+    }
+
     void Damage(int hitPoints)
     {
         HealthPoints -= hitPoints;
         if (HealthPoints <= 0)
         {
-            // game over!
-            print("dead!");
+            Explode();
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Sparks();
         }
 
         UpdateDamageOverlay();
@@ -59,10 +77,11 @@ public class EnemyShip : MonoBehaviour
             DamageOverlay.sprite = DamageSprites[spriteIndex];
     }
 
-    void OnCollisionStay2D(Collision2D coll)
+    void OnCollisionEnter2D(Collision2D coll)
     {
         Asteroid ast = coll.gameObject.GetComponent<Asteroid>();
-        if (ast != null && damageTimer <= 0.0f)
+        Player player = coll.gameObject.GetComponent<Player>();
+        if ((ast != null || player != null) && coll.relativeVelocity.magnitude >= DamageSpeedThreshold && damageTimer <= 0.0f)
         {
             Damage(1);
 
@@ -100,9 +119,11 @@ public class EnemyShip : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (target == null)
+            return;
+
         Vector3 pointingDir = transform.up;
         rb2d.AddForce(pointingDir * MoveSpeed);
-
 
         // turning towards player
         Vector2 dirToTarget = (target.transform.position - transform.position).normalized;

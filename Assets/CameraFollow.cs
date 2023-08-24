@@ -16,14 +16,18 @@ public class CameraFollow : MonoBehaviour
         // pass 2:
 
         // set offset from target at the start
-        offset = transform.position - target.position;        
+        if (target != null)
+            offset = transform.position - target.position;        
     }
 
 
     void LateUpdate()
     {
-        Vector3 targetPos = target.position + offset;
+        if (target != null)
+        {
+            Vector3 targetPos = target.position + offset;
 
-        transform.position = targetPos;
+            transform.position = targetPos;
+        }
     }
 }

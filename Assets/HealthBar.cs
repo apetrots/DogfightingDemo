@@ -35,7 +35,11 @@ public class HealthBar : MonoBehaviour
         {
             Health = target.HealthPoints;
         }
-        
+        else
+        {
+            Health = 0;
+        }
+
         UpdateHealthBar();
     }
 }

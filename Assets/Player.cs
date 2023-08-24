@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public float LaserForce = 20.0f;
 
     public float DamageCooldown = 0.25f;
+    public float DamageSpeedThreshold = 1.5f;
 
     public GameObject laserPrefab;
     // can specifically reference the transform of a gameobject
@@ -17,9 +18,13 @@ public class Player : MonoBehaviour
 
     public int HealthPoints = 4;
 
+
     public SpriteRenderer DamageOverlay;
 
     public Sprite[] DamageSprites;
+
+    public GameObject shipExplosionFX;
+    public GameObject sparksFX;
 
     Rigidbody2D rb2d;
 
@@ -27,10 +32,27 @@ public class Player : MonoBehaviour
     // if damageTimer > 0 then invulnerable to collision damage...
     float damageTimer = 0.0f;
 
+
     void Start()
     {
     // physics 1st pass 
         rb2d = GetComponent<Rigidbody2D>();
+    }
+
+    void GameOver()
+    {
+        var gameManager = FindObjectOfType<GameManager>();
+        gameManager.GameOver();
+    }
+
+    void Explode()
+    {
+        Instantiate(shipExplosionFX, transform.position, Quaternion.identity);
+    }
+
+    void Sparks()
+    {
+        Instantiate(sparksFX, transform.position, Quaternion.identity);
     }
 
     void Damage(int hitPoints)
@@ -38,8 +60,14 @@ public class Player : MonoBehaviour
         HealthPoints -= hitPoints;
         if (HealthPoints <= 0)
         {
+            Explode();
+            GameOver();
             // game over!
-            print("dead!");
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Sparks();
         }
 
         UpdateDamageOverlay();
@@ -54,10 +82,11 @@ public class Player : MonoBehaviour
             DamageOverlay.sprite = DamageSprites[spriteIndex];
     }
 
-    void OnCollisionStay2D(Collision2D coll)
+    void OnCollisionEnter2D(Collision2D coll)
     {
         Asteroid ast = coll.gameObject.GetComponent<Asteroid>();
-        if (ast != null && damageTimer <= 0.0f)
+        EnemyShip enemy = coll.gameObject.GetComponent<EnemyShip>();
+        if ((ast != null || enemy != null) && coll.relativeVelocity.magnitude >= DamageSpeedThreshold && damageTimer <= 0.0f)
         {
             Damage(1);
 
